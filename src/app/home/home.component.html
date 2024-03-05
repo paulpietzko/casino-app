@@ -1,1 +1,21 @@
-<p>home works!</p>
+<div class="dashboard-container">
+  <h1>Hallo {{ username }}</h1>
+
+  <div class="balance-container">
+    <span>Guthaben</span>
+    <span class="balance">{{
+      balance | currency : "CHF" : "symbol-narrow" : "1.0-0"
+    }}</span>
+  </div>
+
+  <div class="games-container">
+    <div class="game-card">
+      <h2>Blackjack</h2>
+      <a href="/blackjack">Spielen</a>
+    </div>
+    <div class="game-card">
+      <h2>Slotmaschinen</h2>
+      <a href="/slots">Spielen</a>
+    </div>
+  </div>
+</div>

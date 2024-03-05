@@ -1,1 +1,40 @@
-<p>blackjack works!</p>
+<div class="blackjack-container">
+    <h1>Blackjack</h1>
+  
+    <div class="betting-section">
+      <span>Einsatz</span>
+      <button>10.-</button>
+      <button>50.-</button>
+      <button>100.-</button>
+    </div>
+  
+    <div class="decision-section">
+      <h2>Entscheidung</h2>
+      <button>Noch eine Karte</button>
+      <button>Passen</button>
+    </div>
+  
+    <div class="cards-section">
+      <div>
+        <h2>Eigene</h2>
+        <div *ngFor="let card of playerCards">
+          <span>{{ card.value }}</span>
+          <span *ngIf="card.alternative">/{{ card.alternative }}</span>
+        </div>
+        <div>
+        </div>
+      </div>
+      <div>
+        <h2>Bank</h2>
+        <div *ngFor="let card of dealerCards">
+          <span>{{ card.value }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="balance">
+      <span>Guthaben</span>
+      <span>{{ balance }}.-</span>
+    </div>  
+  </div>
+  

@@ -1,1 +1,42 @@
-<p>signup works!</p>
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="firstName" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nachname</mat-label>
+    <input matInput formControlName="lastName" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nutzername</mat-label>
+    <input matInput formControlName="username" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Passwort</mat-label>
+    <input matInput formControlName="password" type="password" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Präferierter Avatar</mat-label>
+    <mat-select formControlName="preferredAvatar">
+      <mat-option *ngFor="let avatar of avatars" [value]="avatar.value">
+        {{ avatar.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>IBAN</mat-label>
+    <input matInput formControlName="iban" required />
+    <mat-error *ngIf="signUpForm.controls['iban'].hasError('pattern')">
+      Bitte geben Sie eine gültige IBAN ein.
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" [disabled]="!signUpForm.valid">
+    Registrieren
+  </button>
+</form>

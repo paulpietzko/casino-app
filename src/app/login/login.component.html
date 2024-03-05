@@ -1,1 +1,27 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>E-Mail</mat-label>
+    <input matInput formControlName="email" type="email" required />
+    <mat-error *ngIf="loginForm.controls['email'].errors?.['required']">
+      E-Mail ist erforderlich.
+    </mat-error>
+    <mat-error *ngIf="loginForm.controls['email'].errors?.['email']">
+      Bitte geben Sie eine gültige E-Mail-Adresse ein.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Passwort</mat-label>
+    <input matInput formControlName="password" type="password" required />
+    <mat-error *ngIf="loginForm.controls['password'].errors?.['required']">
+      Passwort ist erforderlich.
+    </mat-error>
+    <mat-error *ngIf="loginForm.controls['password'].errors?.['minLength']">
+      Das Passwort muss mindestens 8 Zeichen lang sein.
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" [disabled]="!loginForm.valid">
+    Anmelden
+  </button>
+</form>

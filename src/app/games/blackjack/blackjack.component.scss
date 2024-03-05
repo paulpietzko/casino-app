@@ -1,0 +1,52 @@
+.blackjack-container {
+  font-family: "Arial", sans-serif;
+  max-width: 600px;
+  margin: auto;
+
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  .betting-section,
+  .decision-section {
+    margin-bottom: 20px;
+    button {
+      background-color: #e0e0e0;
+      border: none;
+      padding: 10px 20px;
+      margin-right: 10px;
+      border-radius: 20px;
+      &:hover {
+        background-color: darken(#e0e0e0, 5%);
+      }
+    }
+  }
+
+  .cards-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    div {
+      background-color: #f0f0f0;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      div {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .balance {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 10px 20px;
+  }
+}

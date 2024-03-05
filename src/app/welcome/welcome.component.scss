@@ -1,0 +1,25 @@
+.games-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+
+  .game-card {
+    display: flex;
+    flex-direction: row;
+
+    h2 {
+      font-size: 1.5rem;
+      color: #333333;
+      background: #eee;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+      font-size: 1rem;
+      color: #666666;
+    }
+  }
+}

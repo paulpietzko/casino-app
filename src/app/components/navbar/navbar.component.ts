@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 
-export class Navbar {
+export class NavbarComponent {
   constructor(private router: Router) {}
 
   navigateToLogin() {

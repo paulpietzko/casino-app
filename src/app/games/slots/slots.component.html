@@ -1,1 +1,8 @@
-<p>slots works!</p>
+<div class="slot-machine">
+  <div class="slots">
+    <div *ngFor="let slot of slots; let i = index" class="slot">
+      {{ slot }}
+    </div>
+  </div>
+  <button (click)="spin()">Spin</button>
+</div>
