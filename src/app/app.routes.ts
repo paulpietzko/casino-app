@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { WelcomeComponent } from './welcome/welcome.component';
-import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
+import { HomeComponent } from './components/home/home.component';
 import { BlackjackComponent } from './games/blackjack/blackjack.component';
 import { SlotsComponent } from './games/slots/slots.component';
 
