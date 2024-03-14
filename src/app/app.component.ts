@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
     NavbarComponent,
     MatToolbarModule,
     MatButtonModule,
+    HttpClientModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

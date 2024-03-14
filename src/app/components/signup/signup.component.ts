@@ -4,6 +4,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'signup',
@@ -36,11 +37,18 @@ export class SignupComponent {
     { value: 'avatar5', viewValue: 'Avatar 5' },
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   onSubmit() {
     if (this.signUpForm.valid) {
-      console.log('Form Data: ', this.signUpForm.value);
+      this.authService.signup(this.signUpForm.value).subscribe({
+        next: (response) => {
+          console.log('User registered successfully', response);
+        },
+        error: (error) => {
+          console.error('There was an error!', error);
+        },
+      });
     }
   }
 }
