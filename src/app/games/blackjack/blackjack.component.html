@@ -1,40 +1,39 @@
 <div class="blackjack-container">
-    <h1>Blackjack</h1>
-  
-    <div class="betting-section">
-      <span>Einsatz</span>
-      <button>10.-</button>
-      <button>50.-</button>
-      <button>100.-</button>
-    </div>
-  
-    <div class="decision-section">
-      <h2>Entscheidung</h2>
-      <button>Noch eine Karte</button>
-      <button>Passen</button>
-    </div>
-  
-    <div class="cards-section">
-      <div>
-        <h2>Eigene</h2>
-        <div *ngFor="let card of playerCards">
-          <span>{{ card.value }}</span>
-          <span *ngIf="card.alternative">/{{ card.alternative }}</span>
-        </div>
-        <div>
-        </div>
-      </div>
-      <div>
-        <h2>Bank</h2>
-        <div *ngFor="let card of dealerCards">
-          <span>{{ card.value }}</span>
-        </div>
-      </div>
-    </div>
-  
-    <div class="balance">
-      <span>Guthaben</span>
-      <span>{{ balance }}.-</span>
-    </div>  
+  <h1>Blackjack</h1>
+
+  <div class="betting-section">
+    <span>Einsatz</span>
+    <button (click)="placeBet(10)">10.-</button>
+    <button (click)="placeBet(50)">50.-</button>
+    <button (click)="placeBet(100)">100.-</button>
   </div>
-  
+
+  <div class="decision-section">
+    <h2>Entscheidung</h2>
+    <button (click)="hit()">Noch eine Karte</button>
+    <button (click)="stand()">Passen</button>
+  </div>
+
+  <div class="cards-section">
+    <div>
+      <h2>Eigene</h2>
+      <div *ngFor="let card of playerCards">
+        <!-- Angenommen, card hat Eigenschaften rank und suit -->
+        <span>{{ card.rank }} of {{ card.suit }}</span>
+        <!-- Alternative wird nur angezeigt, wenn vorhanden -->
+        <span *ngIf="card.alternative">/{{ card.alternative }}</span>
+      </div>
+    </div>
+    <div>
+      <h2>Bank</h2>
+      <div *ngFor="let card of dealerCards">
+        <span>{{ card.rank }} of {{ card.suit }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="balance">
+    <span>Guthaben</span>
+    <span>{{ balance }}.-</span>
+  </div>  
+</div>

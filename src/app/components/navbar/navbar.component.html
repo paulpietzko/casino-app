@@ -1,11 +1,13 @@
 <mat-toolbar color="primary">
-    <a mat-button href="/home">
-      <span>Logo</span>
-    </a>
-  
-    <span class="example-spacer"></span>
-  
+  <a mat-button href="/home">
+    <span>Logo</span>
+  </a>
+  <span class="example-spacer"></span>
+  <ng-container *ngIf="isAuthenticated; else loginRegisterLinks">
+    <button mat-button (click)="logout()">Abmelden</button>
+  </ng-container>
+  <ng-template #loginRegisterLinks>
     <a mat-button href="/login">Anmelden</a>
     <a mat-button href="/signup">Registrieren</a>
-  </mat-toolbar>
-  
+  </ng-template>
+</mat-toolbar>
