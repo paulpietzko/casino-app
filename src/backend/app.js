@@ -1,15 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
-
+const cors = require('cors');
 const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// 1) middlewares
+// 1) Middlewares
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+app.use(cors()); // CORS aktiviert für alle Routen
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
@@ -18,8 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 3) routes
-
+// 3) Routes
 app.use('/api/v1/users', userRouter);
 
 module.exports = app;

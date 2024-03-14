@@ -8,7 +8,13 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
+  private baseUrl = 'http://localhost:3000/api/v1/users';
+
   signup(userData: any): Observable<any> {
-    return this.http.post('http://localhost:3000/api/v1/users/signup', userData); // Needs to be changed to SeverIP when beeing deployed
+    return this.http.post(`${this.baseUrl}/signup`, userData);
+  }
+  
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, { email, password });
   }
 }

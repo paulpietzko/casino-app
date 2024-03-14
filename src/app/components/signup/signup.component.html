@@ -1,12 +1,12 @@
 <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
-    <input matInput formControlName="firstName" required />
+    <input matInput formControlName="name" required />
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Nachname</mat-label>
-    <input matInput formControlName="lastName" required />
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" required />
   </mat-form-field>
 
   <mat-form-field appearance="fill">

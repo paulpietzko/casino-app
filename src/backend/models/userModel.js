@@ -3,11 +3,11 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
-  firstName: {
+  name: {
     type: String,
     required: [true, "Bitte geben Sie Ihren Vornamen an"],
   },
-  lastName: {
+  email: {
     type: String,
     required: [true, "Bitte geben Sie Ihren Nachnamen an"],
   },
@@ -36,15 +36,11 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function (next) {
-  if (this.password !== this.passwordConfirm) {
-    console.log("isNotChanged");
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
 
-    return next();
-  }
-
-  console.log("isChanged");
   this.password = await bcrypt.hash(this.password, 12);
+
   this.passwordConfirm = undefined;
   next();
 });
