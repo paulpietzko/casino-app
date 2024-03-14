@@ -13,10 +13,14 @@ const signToken = (id) => {
 exports.signup = async (req, res, next) => {
   try {
     const newUser = await User.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       username: req.body.username,
-      email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
+      preferredAvatar: req.body.preferredAvatar,
+      iban: req.body.iban,
+      balance: req.body.balance // value of 1000 will be asigned in Model
     });
 
     const token = signToken(newUser._id);
@@ -31,27 +35,26 @@ exports.signup = async (req, res, next) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Error',
+      message: err.message,
     });
   }
 };
 
+
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    // 1) Check if email and password exist
-    if (!email || !password)
-      return next(new AppError('Please provide a email and a password', 400));
+    // 1) Check if username and password exist
+    if (!username || !password)
+      return next(new AppError('Please provide a username and a password', 400));
 
     // 2) Check if user exists and password is correct
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ username }).select('+password');
 
     if (!user || !(await user.correctPassword(password, user.password)))
       return next(
-        new AppError(
-          'Please provide a email and a passwordIncorrect email or password'
-        )
+        new AppError('Incorrect username or password', 401)
       );
 
     // 3) If everything is ok, send token to client
@@ -67,10 +70,11 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Error',
+      message: err.message,
     });
   }
 };
+
 exports.protect = async (req, res, next) => {
 
   try {
