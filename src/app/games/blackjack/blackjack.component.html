@@ -35,15 +35,22 @@
   </div>
 
   <!-- Drop-Zone für Jetons -->
-  <div class="jeton-drop-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+  <div
+    class="jeton-drop-zone"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+  >
     Setzen Sie Ihre Jetons hier
     <div *ngFor="let jetonValue of setJetons; let i = index" class="set-jeton">
-      <img src="assets/jetons/{{ jetonValue }}.png" alt="Jeton" (click)="removeJeton(i)" />
+      <img
+        src="assets/jetons/{{ jetonValue }}.png"
+        alt="Jeton"
+        (click)="removeJeton(i)"
+      />
     </div>
   </div>
 
   <!-- Einsatz anzeigen -->
-  <div class="total-bet">
-    Einsatz: {{ jetonService.getTotalBet() }}€
-  </div>
+  <div class="total-bet">Einsatz: {{ jetonService.getTotalBet() }} CHF</div>
+  <div class="total-bet">Balance: {{ balance }} CHF</div>
 </div>

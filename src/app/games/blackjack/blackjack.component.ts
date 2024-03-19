@@ -3,13 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GameService, Card } from '../../services/blackjack.service';
 import { JetonService } from '../../services/jeton.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-blackjack',
   standalone: true,
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   templateUrl: './blackjack.component.html',
   styleUrls: ['./blackjack.component.scss'],
 })
@@ -22,17 +21,30 @@ export class BlackjackComponent {
   public balance = 0;
 
   constructor(
-    private gameService: GameService, 
+    private gameService: GameService,
     public jetonService: JetonService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.startNewGame();
+    this.fetchBalance();
+  }
+
+  fetchBalance(): void {
+    this.authService.fetchUserDetails().subscribe({
+      next: (userDetails) => {
+        this.balance = userDetails.data.user.balance;
+      },
+      error: (error) => {
+        console.error('Fehler beim Abrufen der Benutzerdetails', error);
+      },
+    });
   }
 
   startNewGame(): void {
-    this.gameService.newGame();    
+    this.gameService.newGame();
     const card1 = this.gameService.dealCard();
     const card2 = this.gameService.dealCard();
     const dealerCard = this.gameService.dealCard();
@@ -43,7 +55,9 @@ export class BlackjackComponent {
       this.isGameOver = false;
       this.playerDone = false;
     } else {
-      this.snackBar.open('Fehler beim Starten eines neuen Spiels', 'OK', { duration: 3000 });
+      this.snackBar.open('Fehler beim Starten eines neuen Spiels', 'OK', {
+        duration: 3000,
+      });
     }
   }
 
@@ -55,20 +69,19 @@ export class BlackjackComponent {
   onDragOver(event: DragEvent): void {
     this.jetonService.onDragOver(event);
   }
-  
+
   onDrop(event: DragEvent): void {
-    this.jetonService.onDrop(event, this.snackBar);
+    this.jetonService.onDrop(event, this.snackBar, () => this.fetchBalance());
   }
 
   removeJeton(index: number): void {
-    this.jetonService.removeJeton(index);
-    this.snackBar.open('Jeton entfernt', 'OK', { duration: 3000 });
+    this.jetonService.removeJeton(index, () => this.fetchBalance());
   }
 
   get setJetons(): number[] {
     return this.jetonService.getSetJetons();
   }
-  
+
   // Game Logic
 
   hit(): void {
@@ -81,7 +94,9 @@ export class BlackjackComponent {
           this.isGameOver = true;
         }
       } else {
-        this.snackBar.open('Keine Karten mehr im Deck', 'OK', { duration: 3000 });
+        this.snackBar.open('Keine Karten mehr im Deck', 'OK', {
+          duration: 3000,
+        });
       }
     }
   }
@@ -113,17 +128,19 @@ export class BlackjackComponent {
   }
 
   canSplit(): boolean {
-    return this.playerHand.length === 2 && this.playerHand[0].value === this.playerHand[1].value;
+    return (
+      this.playerHand.length === 2 &&
+      this.playerHand[0].value === this.playerHand[1].value
+    );
   }
 
   split(): void {
-    // Die Logik zum Splitten der Hand, wenn zwei Karten den gleichen Wert haben.
-    // Dies erfordert eine erweiterte Spiellogik, um mehrere Spielerhände zu verwalten.
+    // TOOD
   }
 
   private getHandValue(hand: Card[]): number {
     let value = hand.reduce((acc, card) => acc + card.value, 0);
-    let aces = hand.filter(card => card.value === 11).length;
+    let aces = hand.filter((card) => card.value === 11).length;
 
     while (value > 21 && aces > 0) {
       value -= 10; // Ace can be 1 instead of 11
@@ -138,14 +155,36 @@ export class BlackjackComponent {
     const dealerValue = this.getHandValue(this.dealerHand);
     this.isGameOver = true;
 
+    let message = '';
+    let balanceChange = 0;
+
     if (playerValue > 21) {
-      this.snackBar.open('Du hast verloren!', 'OK', { duration: 3000 });
+      message = 'Du hast verloren!';
     } else if (dealerValue > 21 || playerValue > dealerValue) {
-      this.snackBar.open('Du hast gewonnen!', 'OK', { duration: 3000 });
+      message = 'Du hast gewonnen!';
+      balanceChange = this.jetonService.getTotalBet() * 2;
     } else if (playerValue < dealerValue) {
-      this.snackBar.open('Du hast verloren!', 'OK', { duration: 3000 });
+      message = 'Du hast verloren!';
     } else {
-      this.snackBar.open('Unentschieden!', 'OK', { duration: 3000 });
+      message = 'Unentschieden!';
+      balanceChange = this.jetonService.getTotalBet();
     }
+
+    this.snackBar.open(message, 'OK', { duration: 3000 });
+    if (balanceChange != 0) {
+      this.updateUserBalance(balanceChange);
+    }
+  }
+
+  private updateUserBalance(balanceChange: number): void {
+    this.authService.updateUserBalance(balanceChange).subscribe({
+      next: (newBalance) => {
+        this.balance = newBalance;
+        this.fetchBalance();
+      },
+      error: (error) => {
+        console.error('Fehler beim Aktualisieren der Benutzerbalance', error);
+      },
+    });
   }
 }
