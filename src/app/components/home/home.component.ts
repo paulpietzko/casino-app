@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'home',
@@ -11,27 +10,26 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./home.component.scss'],
   providers: [CurrencyPipe]
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   username: string | null = null;
   balance = 0;
-  private userSubscription?: Subscription;
 
   constructor(private authService: AuthService, private currencyPipe: CurrencyPipe) {}
 
   ngOnInit() {
-    this.userSubscription = this.authService.getUserDetails().subscribe({
-      next: (user) => {
-        this.username = user.name;
-        this.balance = user.balance;
-      },
-      error: (error) => {
-        console.error('Fehler beim Abrufen der Benutzerdetails', error);
-      },
-    });
+    this.fetchUserDetails();
   }
 
-  ngOnDestroy() {
-    this.userSubscription?.unsubscribe();
+  fetchUserDetails() {
+    this.authService.getUserDetails().subscribe({
+      next: (response) => {
+        this.username = response.data.user.username;
+        this.balance = response.data.user.balance;
+      },
+      error: (error) => {
+        console.error('Fehler beim Abrufen der Benutzerdaten', error);
+      }
+    });
   }
 
   getFormattedBalance(): string {

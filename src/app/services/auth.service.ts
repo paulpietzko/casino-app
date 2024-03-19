@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import * as jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+import { throwError } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+
+interface UserDetails {
+  data: {
+    user: {
+      id: string;
+      balance: number;
+    };
+  };
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,20 +22,38 @@ export class AuthService {
   private isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());
   private username = new BehaviorSubject<string | null>(null);
   private baseUrl = 'http://localhost:3000/api/v1/users';
+  private balance: number = 0;
+  private userId: string = '';
 
   constructor(private http: HttpClient) {}
 
-  getUserDetails(): Observable<any> {
-    const userId = this.getUserIdFromToken();
+  fetchUserDetails(): Observable<UserDetails> {
+    const userId = this.getUserIdFromToken() || '';
     if (!userId) {
       console.error('Benutzer-ID konnte nicht aus dem Token abgeleitet werden.');
+      return throwError(() => new Error('Benutzer-ID ist nicht vorhanden.'));
+    }
+  
+    return this.http.get<UserDetails>(`${this.baseUrl}/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getJwtToken()}`,
+      },
+    });
+  }
+
+  getUserDetails(): Observable<any> {
+    const userId = this.getUserIdFromToken() || '';
+    if (!userId) {
+      console.error(
+        'Benutzer-ID konnte nicht aus dem Token abgeleitet werden.'
+      );
       return of(null);
     }
 
     return this.http.get(`${this.baseUrl}/${userId}`, {
       headers: {
-        Authorization: `Bearer ${this.getJwtToken()}`
-      }
+        Authorization: `Bearer ${this.getJwtToken()}`,
+      },
     });
   }
 
@@ -34,14 +62,16 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/login`, { email, password }).pipe(
-      tap(res => {
-        if (res && res.token) {
-          this.setToken(res.token);
-          this.setIsAuthenticated(true);
-        }
-      })
-    );
+    return this.http
+      .post<any>(`${this.baseUrl}/login`, { email, password })
+      .pipe(
+        tap((res) => {
+          if (res && res.token) {
+            this.setToken(res.token);
+            this.setIsAuthenticated(true);
+          }
+        })
+      );
   }
 
   logout(): Observable<boolean> {
@@ -58,10 +88,32 @@ export class AuthService {
     return this.isAuthenticated.asObservable();
   }
 
-  updateBalance(balance: number): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/updateBalance`, { balance });
+  getUserBalance(): number {
+    return this.balance;
   }
 
+  updateUserBalance(amount: number): Observable<number> {
+    const userId = this.getUserIdFromToken() || '';
+    const updateBalanceUrl = `${this.baseUrl}/${userId}`;
+    const newBalance = this.balance + amount;
+  
+    return this.http.patch<{balance: number}>(updateBalanceUrl, { balance: newBalance }, {
+      headers: {
+        Authorization: `Bearer ${this.getJwtToken()}`
+      }
+    }).pipe(
+      tap({
+        next: (response) => {
+          this.balance = response.balance;
+        },
+        error: (error) => {
+          console.error('Fehler beim Aktualisieren der Benutzerbalance', error);
+        }
+      }),
+      map((response: {balance: number}) => response.balance)  // Typ von `response` angegeben
+    );
+  }
+  
   private setToken(token: string) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('jwt', token);
