@@ -92,15 +92,18 @@ export class AuthService {
     return this.balance;
   }
 
-  updateUserBalance(amount: number): Observable<number> {
+  updateUserBalance(balanceChange: number): Observable<number> {
+    if (isNaN(balanceChange)) {
+      throw new Error('balanceChange muss eine Zahl sein');
+    }
+  
     const userId = this.getUserIdFromToken() || '';
     const updateBalanceUrl = `${this.baseUrl}/${userId}`;
-    const newBalance = this.balance + amount;
   
-    return this.http.patch<{balance: number}>(updateBalanceUrl, { balance: newBalance }, {
+    return this.http.patch<{ balance: number }>(updateBalanceUrl, { balanceChange }, {
       headers: {
-        Authorization: `Bearer ${this.getJwtToken()}`
-      }
+        Authorization: `Bearer ${this.getJwtToken()}`,
+      },
     }).pipe(
       tap({
         next: (response) => {
@@ -108,9 +111,9 @@ export class AuthService {
         },
         error: (error) => {
           console.error('Fehler beim Aktualisieren der Benutzerbalance', error);
-        }
+        },
       }),
-      map((response: {balance: number}) => response.balance)  // Typ von `response` angegeben
+      map(response => response.balance)
     );
   }
   

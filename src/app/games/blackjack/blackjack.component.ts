@@ -19,6 +19,7 @@ export class BlackjackComponent {
   public isGameOver: boolean = false;
   public playerDone: boolean = false;
   public jetonValues = [5, 10, 20, 50, 100];
+  public balance = 0;
 
   constructor(
     private gameService: GameService, 

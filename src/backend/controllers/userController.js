@@ -48,14 +48,24 @@ exports.getUser = async (req, res) => {
 exports.updateUserBalance = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { balance } = req.body;
+    const { balanceChange } = req.body;
 
-    const updatedUser = await User.findByIdAndUpdate(userId, { balance }, { new: true });
+    if (isNaN(balanceChange)) {
+      return res.status(400).json({ status: 'fail', message: 'Must be a valid number' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ status: 'fail', message: 'User not found' });
+    }
+
+    user.balance += balanceChange;
+    await user.save();
 
     res.status(200).json({
       status: 'success',
       data: {
-        user: updatedUser
+        user
       }
     });
   } catch (err) {

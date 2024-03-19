@@ -59,38 +59,59 @@ export class SlotsComponent implements OnInit {
       this.snackBar.open('Nicht genug Guthaben!', 'OK', { duration: 3000 });
       return;
     }
-
-    this.authService.updateUserBalance(-this.bet);
-  
+    
     this.isSpinning = true;
-    this.balance -= this.bet;
-  
+    
     setTimeout(() => {
       this.currentSymbols = this.reels.map(reel => {
         const randomIndex = Math.floor(Math.random() * reel.length);
         return reel[randomIndex];
       });
   
-      this.calculateWin();
-      this.isSpinning = false;
+      let winAmount = this.calculateWin();
+      this.updateUserBalanceAfterWin(winAmount - this.bet);
     }, 1000);
   }
   
-  calculateWin(): void {
+  updateUserBalanceAfterWin(balanceChange: number): void {
+    this.authService.updateUserBalance(balanceChange).subscribe({
+      next: () => {
+        this.fetchLatestBalance();
+      },
+      error: (error) => {
+        console.error('Fehler beim Aktualisieren der Benutzerbalance', error);
+        this.isSpinning = false;
+      }
+    });
+  } 
+  
+  fetchLatestBalance(): void {
+    this.authService.fetchUserDetails().subscribe({
+      next: (userDetails: UserDetails | null) => {
+        if (userDetails) {
+          this.balance = userDetails.data.user.balance;
+        }
+        this.isSpinning = false;
+      },
+      error: (error: any) => {
+        console.error('Fehler beim Abrufen der Benutzerdetails', error);
+        this.isSpinning = false;
+      },
+    });
+  }
+  
+  calculateWin(): number {
     const uniqueSymbols = new Set(this.currentSymbols);
     let winAmount = 0;
   
-    if (uniqueSymbols.size === 1) { // Alle Symbole sind gleich
-      winAmount = this.bet * 5; // Gewinnmultiplikator kann angepasst werden
-      this.snackBar.open('Großer Gewinn!', 'OK', { duration: 3000 });
-    } else if (uniqueSymbols.size === 2) { // Zwei Symbole sind gleich
-      winAmount = this.bet * 0.5; // Gewinnmultiplikator kann angepasst werden
+    if (uniqueSymbols.size === 1) {
+      winAmount = this.bet * 5;
+      this.snackBar.open('Grosser Gewinn!', 'OK', { duration: 3000 });
+    } else if (uniqueSymbols.size === 2) {
+      winAmount = this.bet * 0.5;
       this.snackBar.open('Kleiner Gewinn!', 'OK', { duration: 3000 });
     }
   
-    // Aktualisieren Sie die Benutzerbalance, wenn es einen Gewinn gibt
-    if (winAmount > 0) {
-      this.authService.updateUserBalance(winAmount);
-    }
-  }
+    return winAmount;
+  }  
 }
