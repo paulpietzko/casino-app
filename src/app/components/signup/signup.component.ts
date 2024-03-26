@@ -64,12 +64,15 @@ export class SignupComponent {
         error: (error) => {
           console.error('There was an error during signup', error);
           // Show snakbar on error
-          this.snackBar.open('Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.', 'Schliessen', {
-            duration: 5000,
-          });
+          this.snackBar.open(
+            'Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.',
+            'Schliessen',
+            {
+              duration: 5000,
+            }
+          );
         },
       });
     }
   }
- 
 }
