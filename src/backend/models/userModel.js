@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   iban: {
     type: String,
     required: [true, "Bitte geben Sie eine IBAN an"],
-    validate: [validator.isIBAN, "Bitte geben Sie eine gültige IBAN ein"],
+    validate: [validator.isIBAN, "Bitte geben Sie eine gültige Deutsche IBAN ein"],
   },
   balance: {
     type: Number,
@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 12);
 
@@ -47,7 +47,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,
-  userPassword
+  userPassword,
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
@@ -56,7 +56,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
-      10
+      10,
     );
 
     return JWTTimestamp < changedTimestamp;

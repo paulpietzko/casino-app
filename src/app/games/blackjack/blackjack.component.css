@@ -1,0 +1,93 @@
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: green;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 900px;
+  margin: auto;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+.game-container .dealer-hand,
+.game-container .player-hand {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+.game-container .dealer-hand .card,
+.game-container .player-hand .card {
+  width: 100px;
+  height: auto;
+  margin: 0 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+.game-container .dealer-hand .back,
+.game-container .player-hand .back {
+  transform: rotateY(0deg);
+}
+.game-container .dealer-hand .card.revealed,
+.game-container .player-hand .card.revealed {
+  transform: rotateY(180deg);
+}
+.game-container button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.game-container button:hover {
+  background-color: #0056b3;
+}
+.game-container button:focus {
+  outline: none;
+}
+
+/* blackjack.component.scss */
+.jetons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.jeton {
+  width: 50px;
+  height: auto;
+  margin: 0 5px;
+  cursor: grab;
+}
+
+.set-jeton img {
+  width: 30px;
+  height: auto;
+  margin: 0 5px;
+}
+
+.jeton-drop-zone {
+  position: relative;
+  border: 2px dashed #ccc;
+  height: 150px;
+  width: 300px;
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.total-bet {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #ffffff;
+}/*# sourceMappingURL=blackjack.component.css.map */

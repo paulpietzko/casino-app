@@ -7,11 +7,11 @@ import { BlackjackComponent } from './games/blackjack/blackjack.component';
 import { SlotsComponent } from './games/slots/slots.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/welcome', pathMatch: 'full' },
-    { path: 'welcome', component: WelcomeComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SignupComponent },
-    { path: 'blackjack', component: BlackjackComponent },
-    { path: 'slots', component: SlotsComponent },
+  { path: '', redirectTo: '/welcome', pathMatch: 'full' },
+  { path: 'welcome', component: WelcomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'blackjack', component: BlackjackComponent },
+  { path: 'slots', component: SlotsComponent },
 ];

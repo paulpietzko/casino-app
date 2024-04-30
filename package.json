@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:casino-app": "node dist/casino-app/server/server.mjs"
+    "serve:ssr:casino-app": "node dist/casino-app/server/server.mjs",
+    "prettier": "prettier --write ."
   },
   "private": true,
   "dependencies": {
@@ -35,6 +36,7 @@
     "jwt-decode": "^4.0.0",
     "mongoose": "^8.2.1",
     "morgan": "^1.10.0",
+    "prettier": "^3.2.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "validator": "^13.11.0",
@@ -47,6 +49,7 @@
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
+    "eslint": "^9.1.1",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

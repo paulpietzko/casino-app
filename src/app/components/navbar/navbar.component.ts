@@ -18,7 +18,10 @@ export class NavbarComponent implements OnDestroy {
   private authSub: Subscription;
   snackBar: any;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
     this.authSub = this.authService.getIsAuthenticated().subscribe((isAuth) => {
       this.isAuthenticated = isAuth;
     });
@@ -32,7 +35,6 @@ export class NavbarComponent implements OnDestroy {
     });
     this.router.navigate(['/welcome']);
   }
-  
 
   ngOnDestroy() {
     this.authSub.unsubscribe();

@@ -8,13 +8,16 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [CurrencyPipe]
+  providers: [CurrencyPipe],
 })
 export class HomeComponent implements OnInit {
   username: string | null = null;
   balance = 0;
 
-  constructor(private authService: AuthService, private currencyPipe: CurrencyPipe) {}
+  constructor(
+    private authService: AuthService,
+    private currencyPipe: CurrencyPipe,
+  ) {}
 
   ngOnInit() {
     this.fetchUserDetails();
@@ -28,7 +31,7 @@ export class HomeComponent implements OnInit {
       },
       error: (error) => {
         console.error('Fehler beim Abrufen der Benutzerdaten', error);
-      }
+      },
     });
   }
 

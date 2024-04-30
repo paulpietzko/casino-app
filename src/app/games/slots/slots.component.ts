@@ -31,7 +31,10 @@ export class SlotsComponent implements OnInit {
   bet: number = 5;
   possibleBets: number[] = [5, 10, 20, 50, 100];
 
-  constructor(private snackBar: MatSnackBar, private authService: AuthService) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.authService.fetchUserDetails().subscribe({
@@ -59,20 +62,20 @@ export class SlotsComponent implements OnInit {
       this.snackBar.open('Nicht genug Guthaben!', 'OK', { duration: 3000 });
       return;
     }
-    
+
     this.isSpinning = true;
-    
+
     setTimeout(() => {
-      this.currentSymbols = this.reels.map(reel => {
+      this.currentSymbols = this.reels.map((reel) => {
         const randomIndex = Math.floor(Math.random() * reel.length);
         return reel[randomIndex];
       });
-  
+
       let winAmount = this.calculateWin();
       this.updateUserBalanceAfterWin(winAmount - this.bet);
     }, 1000);
   }
-  
+
   updateUserBalanceAfterWin(balanceChange: number): void {
     this.authService.updateUserBalance(balanceChange).subscribe({
       next: () => {
@@ -81,10 +84,10 @@ export class SlotsComponent implements OnInit {
       error: (error) => {
         console.error('Fehler beim Aktualisieren der Benutzerbalance', error);
         this.isSpinning = false;
-      }
+      },
     });
-  } 
-  
+  }
+
   fetchLatestBalance(): void {
     this.authService.fetchUserDetails().subscribe({
       next: (userDetails: UserDetails | null) => {
@@ -99,11 +102,11 @@ export class SlotsComponent implements OnInit {
       },
     });
   }
-  
+
   calculateWin(): number {
     const uniqueSymbols = new Set(this.currentSymbols);
     let winAmount = 0;
-  
+
     if (uniqueSymbols.size === 1) {
       winAmount = this.bet * 5;
       this.snackBar.open('Grosser Gewinn!', 'OK', { duration: 3000 });
@@ -111,7 +114,7 @@ export class SlotsComponent implements OnInit {
       winAmount = this.bet * 0.5;
       this.snackBar.open('Kleiner Gewinn!', 'OK', { duration: 3000 });
     }
-  
+
     return winAmount;
-  }  
+  }
 }

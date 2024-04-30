@@ -3,7 +3,9 @@
 
   <div class="balance-container">
     <span>Guthaben</span>
-    <span class="balance">{{ balance | currency : "CHF" : "symbol-narrow" : "1.0-0" }}</span>
+    <span class="balance">{{
+      balance | currency: "CHF" : "symbol-narrow" : "1.0-0"
+    }}</span>
   </div>
 
   <div class="games-container">

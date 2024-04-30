@@ -46,7 +46,7 @@ export class SignupComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
   ) {}
 
   onSubmit() {
@@ -69,7 +69,7 @@ export class SignupComponent {
             'Schliessen',
             {
               duration: 5000,
-            }
+            },
           );
         },
       });

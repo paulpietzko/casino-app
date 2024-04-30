@@ -1,68 +1,61 @@
 .dashboard-container {
   font-family: "Arial", sans-serif;
   text-align: center;
-
-  h1 {
-    margin: 5rem;
-    font-size: 3rem;
-  }
-
-  .balance-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    font-size: 1.5rem;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 85vw;
-
-    .balance {
-      text-decoration: underline;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-  }
-
-  .games-container {
-    display: flex;
-    justify-content: space-around;
-
-    .game-card {
-      background-color: #f0f0f0;
-      border-radius: 10px;
-      padding: 10rem;
-      width: 150px;
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      h2 {
-        margin: 0;
-        font-size: 3rem;
-        margin-bottom: 10px;
-      }
-
-      a {
-        margin-top: 10px;
-        font-size: 2rem;
-        text-decoration: none;
-        background-color: #e0e0e0;
-        color: #000;
-        padding: 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        &:hover {
-          background-color: darken(#e0e0e0, 5%);
-        }
-      }
-    }
-  }
+}
+.dashboard-container h1 {
+  margin: 5rem;
+  font-size: 3rem;
+}
+.dashboard-container .balance-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 85vw;
+}
+.dashboard-container .balance-container .balance {
+  text-decoration: underline;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.dashboard-container .games-container {
+  display: flex;
+  justify-content: space-around;
+}
+.dashboard-container .games-container .game-card {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 10rem;
+  width: 150px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dashboard-container .games-container .game-card h2 {
+  margin: 0;
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+.dashboard-container .games-container .game-card a {
+  margin-top: 10px;
+  font-size: 2rem;
+  text-decoration: none;
+  background-color: #e0e0e0;
+  color: #000;
+  padding: 20px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.dashboard-container .games-container .game-card a:hover {
+  background-color: lightgray;
 }
 
 /* code vom steiner nachmittag
@@ -192,4 +185,4 @@ button {
   margin-bottom: 10px;
 }
 
-*/
+*//*# sourceMappingURL=home.component.css.map */

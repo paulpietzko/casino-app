@@ -1,13 +1,13 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const userRouter = require('./routes/userRoutes');
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
 // 1) Middlewares
-if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 app.use(cors()); // CORS aktiviert für alle Routen
@@ -20,6 +20,6 @@ app.use((req, res, next) => {
 });
 
 // 3) Routes
-app.use('/api/v1/users', userRouter);
+app.use("/api/v1/users", userRouter);
 
 module.exports = app;

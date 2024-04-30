@@ -24,7 +24,7 @@ export class BlackjackComponent {
     private gameService: GameService,
     public jetonService: JetonService,
     private snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {

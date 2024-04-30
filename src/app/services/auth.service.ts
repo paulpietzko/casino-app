@@ -20,20 +20,20 @@ interface UserDetails {
 })
 export class AuthService {
   private isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());
-  private username = new BehaviorSubject<string | null>(null);
   private baseUrl = 'http://localhost:3000/api/v1/users';
   private balance: number = 0;
-  private userId: string = '';
 
   constructor(private http: HttpClient) {}
 
   fetchUserDetails(): Observable<UserDetails> {
     const userId = this.getUserIdFromToken() || '';
     if (!userId) {
-      console.error('Benutzer-ID konnte nicht aus dem Token abgeleitet werden.');
+      console.error(
+        'Benutzer-ID konnte nicht aus dem Token abgeleitet werden.',
+      );
       return throwError(() => new Error('Benutzer-ID ist nicht vorhanden.'));
     }
-  
+
     return this.http.get<UserDetails>(`${this.baseUrl}/${userId}`, {
       headers: {
         Authorization: `Bearer ${this.getJwtToken()}`,
@@ -45,7 +45,7 @@ export class AuthService {
     const userId = this.getUserIdFromToken() || '';
     if (!userId) {
       console.error(
-        'Benutzer-ID konnte nicht aus dem Token abgeleitet werden.'
+        'Benutzer-ID konnte nicht aus dem Token abgeleitet werden.',
       );
       return of(null);
     }
@@ -70,7 +70,7 @@ export class AuthService {
             this.setToken(res.token);
             this.setIsAuthenticated(true);
           }
-        })
+        }),
       );
   }
 
@@ -96,27 +96,36 @@ export class AuthService {
     if (isNaN(balanceChange)) {
       throw new Error('balanceChange muss eine Zahl sein');
     }
-  
+
     const userId = this.getUserIdFromToken() || '';
     const updateBalanceUrl = `${this.baseUrl}/${userId}`;
-  
-    return this.http.patch<{ balance: number }>(updateBalanceUrl, { balanceChange }, {
-      headers: {
-        Authorization: `Bearer ${this.getJwtToken()}`,
-      },
-    }).pipe(
-      tap({
-        next: (response) => {
-          this.balance = response.balance;
+
+    return this.http
+      .patch<{ balance: number }>(
+        updateBalanceUrl,
+        { balanceChange },
+        {
+          headers: {
+            Authorization: `Bearer ${this.getJwtToken()}`,
+          },
         },
-        error: (error) => {
-          console.error('Fehler beim Aktualisieren der Benutzerbalance', error);
-        },
-      }),
-      map(response => response.balance)
-    );
+      )
+      .pipe(
+        tap({
+          next: (response) => {
+            this.balance = response.balance;
+          },
+          error: (error) => {
+            console.error(
+              'Fehler beim Aktualisieren der Benutzerbalance',
+              error,
+            );
+          },
+        }),
+        map((response) => response.balance),
+      );
   }
-  
+
   private setToken(token: string) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('jwt', token);

@@ -7,12 +7,26 @@ export interface Card {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameService {
   private deck: Card[] = [];
   private suits = ['H', 'D', 'C', 'S'];
-  private values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+  private values = [
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+    'A',
+  ];
 
   constructor() {
     this.initializeDeck();
@@ -22,7 +36,11 @@ export class GameService {
     this.deck = [];
     for (let suit of this.suits) {
       for (let value of this.values) {
-        this.deck.push({ value: this.getCardNumericValue(value), suit: suit, code: value + '-' + suit });
+        this.deck.push({
+          value: this.getCardNumericValue(value),
+          suit: suit,
+          code: value + '-' + suit,
+        });
       }
     }
     this.shuffleDeck();

@@ -1,18 +1,22 @@
 <!-- slot-machine.component.html -->
 <div class="slot-machine">
-  <div class="bank-account">
-    Guthaben: {{ balance }}€
-  </div>
+  <div class="bank-account">Guthaben: {{ balance }}€</div>
   <div class="bet-options">
-    Einsatz: 
-    <button *ngFor="let amount of possibleBets" (click)="setBet(amount)">{{ amount }}€</button>
+    Einsatz:
+    <button *ngFor="let amount of possibleBets" (click)="setBet(amount)">
+      {{ amount }}€
+    </button>
   </div>
 
   <div class="reels">
-    <div *ngFor="let symbol of currentSymbols; let i = index" class="reel" [class.spinning]="isSpinning">
+    <div
+      *ngFor="let symbol of currentSymbols; let i = index"
+      class="reel"
+      [class.spinning]="isSpinning"
+    >
       {{ symbol }}
     </div>
-  </div>  
+  </div>
 
   <button (click)="spin()">Spin</button>
 </div>

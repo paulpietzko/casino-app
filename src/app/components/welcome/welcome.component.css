@@ -1,0 +1,27 @@
+.games-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  font-size: 3rem;
+  max-width: 90vw;
+  margin-left: 5vw;
+}
+.games-container .game-card {
+  display: flex;
+  flex-direction: row;
+}
+.games-container .game-card h2 {
+  font-size: 2rem;
+  color: #333333;
+  background: #eee;
+  border-radius: 20px;
+  padding: 8rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.games-container .game-card p {
+  padding: 5rem;
+  font-size: 2rem;
+  line-height: 1.5;
+  color: #666666;
+}/*# sourceMappingURL=welcome.component.css.map */

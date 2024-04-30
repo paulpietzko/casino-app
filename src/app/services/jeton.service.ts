@@ -28,7 +28,8 @@ export class JetonService {
         console.log(`Balance aktualisiert: ${newBalance}`);
         callback();
       },
-      error: (error) => console.error('Fehler beim Aktualisieren der Balance', error)
+      error: (error) =>
+        console.error('Fehler beim Aktualisieren der Balance', error),
     });
   }
 
@@ -59,7 +60,9 @@ export class JetonService {
       const value = parseInt(event.dataTransfer.getData('text'));
       if (!isNaN(value)) {
         this.addJeton(value, callback);
-        snackBar.open(`Jeton im Wert von ${value} gesetzt`, 'OK', { duration: 3000 });
+        snackBar.open(`Jeton im Wert von ${value} gesetzt`, 'OK', {
+          duration: 3000,
+        });
       }
     }
   }
